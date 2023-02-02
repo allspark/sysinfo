@@ -24,7 +24,7 @@ target_include_directories(sysinfo PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include>
         $<INSTALL_INTERFACE:include>)
 
-target_link_libraries(sysinfo PUBLIC fmt::fmt)
+target_link_libraries(sysinfo PUBLIC Boost::headers fmt::fmt)
 
 install(TARGETS sysinfo
         EXPORT ${CMAKE_PROJECT_NAME}Targets

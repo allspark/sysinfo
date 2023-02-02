@@ -11,3 +11,9 @@ supported messages:
 * `RTM_NEWROUTE`, `RTM_DELROUTE`, `RTM_GETROUTE`
 
 see  [example](example/main.cpp)
+
+
+## dependencies
+
+* [fmt](https://github.com/fmtlib/fmt)
+* [boost::outcome](https://www.boost.org/doc/libs/master/libs/outcome/doc/html/index.html)

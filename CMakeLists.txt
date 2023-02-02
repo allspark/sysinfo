@@ -6,6 +6,7 @@ set(CMAKE_CXX_STANDARD 23)
 include(cmake/CompilerOptions.cmake)
 
 find_package(fmt REQUIRED)
+find_package(Boost REQUIRED COMPONENTS headers)
 
 include(GNUInstallDirs)
 
