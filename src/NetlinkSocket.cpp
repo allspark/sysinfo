@@ -401,6 +401,8 @@ outcome::std_result<Interface> Socket::parse_link(struct nlmsghdr& header, struc
     }
     return Action::Unknown;
   }();
+  entry.index = Interface::Index{msg.ifi_index};
+  entry.type = static_cast<Interface::Type>(msg.ifi_type);
 
   if (tb[IFLA_IFNAME])
   {

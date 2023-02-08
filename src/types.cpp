@@ -115,6 +115,12 @@ std::ostream& operator<<(std::ostream& str, Address const& addr)
   return str;
 }
 
+std::ostream& operator<<(std::ostream& str, Interface::Index const index)
+{
+  fmt::print(str, "{}", index.value);
+  return str;
+}
+
 boost::asio::ip::address Address::convertAddress(int family, void* data)
 {
   if (family == AF_INET)
@@ -137,9 +143,35 @@ Interface::Interface(std::string_view t_name)
 {
 }
 
+std::ostream& operator<<(std::ostream& str, Interface::Type const type)
+{
+  using namespace std::string_view_literals;
+  std::string_view type_name = [type]()
+  {
+    switch (type)
+    {
+      case Interface::Type::Ethernet:
+        return "ethernet"sv;
+      case Interface::Type::IpIpTunnel:
+        return "ipiptunnel"sv;
+      case Interface::Type::IpIp6Tunnel:
+        return "ipip6tunnel"sv;
+      case Interface::Type::Loopback:
+        return "loopback"sv;
+      case Interface::Type::Unknown:
+        return "unknown"sv;
+      case Interface::Type::None:
+        return "none"sv;
+    }
+    return "<unknown>"sv;
+  }();
+  fmt::print(str, "{}", type_name);
+  return str;
+}
+
 std::ostream& operator<<(std::ostream& str, Interface const& interface)
 {
-  fmt::print(str, "{} link: {}", interface.action, interface.name);
+  fmt::print(str, "{} index: {} type: {} link: {}", interface.action, interface.index, interface.type, interface.name);
   return str;
 }
 

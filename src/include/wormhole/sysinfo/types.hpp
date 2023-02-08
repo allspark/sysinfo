@@ -9,6 +9,8 @@
 #include <fstream>
 #include <variant>
 
+#include <net/if_arp.h>
+
 #include <fmt/ostream.h>
 #include <boost/asio/ip/address.hpp>
 #include <boost/asio/ip/network_v4.hpp>
@@ -57,12 +59,30 @@ struct Address
 
 struct Interface
 {
+  struct Index
+  {
+    int value;
+
+    friend std::ostream& operator<<(std::ostream&, Index);
+  };
+  enum struct Type : unsigned short
+  {
+    Ethernet = ARPHRD_ETHER,
+    IpIpTunnel = ARPHRD_TUNNEL,
+    IpIp6Tunnel = ARPHRD_TUNNEL6,
+    Loopback = ARPHRD_LOOPBACK,
+    Unknown = ARPHRD_VOID,
+    None = ARPHRD_NONE,
+  };
   Interface() = default;
   explicit Interface(std::string_view t_name);
 
   Action action{Action::New};
+  Index index;
+  Type type;
   std::string name;
 
+  friend std::ostream& operator<<(std::ostream&, Type);
   friend std::ostream& operator<<(std::ostream&, Interface const&);
 };
 
@@ -118,6 +138,14 @@ struct fmt::formatter<wormhole::sysinfo::Scope> : ostream_formatter
 };
 template <>
 struct fmt::formatter<wormhole::sysinfo::Address> : ostream_formatter
+{
+};
+template <>
+struct fmt::formatter<wormhole::sysinfo::Interface::Index> : ostream_formatter
+{
+};
+template <>
+struct fmt::formatter<wormhole::sysinfo::Interface::Type> : ostream_formatter
 {
 };
 template <>
